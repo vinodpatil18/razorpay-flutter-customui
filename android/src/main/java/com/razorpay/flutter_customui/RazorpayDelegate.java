@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import java.util.ArrayList;
 import androidx.annotation.RequiresApi;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -140,11 +141,16 @@ public class RazorpayDelegate implements ActivityResultListener  {
         Razorpay.getAppsWhichSupportUpi(activity, new RzpUpiSupportedAppsCallback() {
             @Override
             public void onReceiveUpiSupportedApps(List<ApplicationDetails> list) {
-                HashMap<Object, Object> hMap = new HashMap<>();
-                for (int i = 0; i < list.size(); i++) {
-                    hMap.put(list.get(i).getPackageName(), list.get(i).getAppName());
+                List< HashMap<String, String>> itemList = new ArrayList<>();
+
+                for (int i=0;i<list.size();i++) {
+                    HashMap<String, String> appInfo = new HashMap<>();
+                    appInfo.put("appName", list.get(i).getAppName());
+                    appInfo.put("appPackageName", list.get(i).getPackageName());
+                    appInfo.put("appLogo", list.get(i).getAppLogoUrl());
+                    itemList.add(appInfo);
                 }
-                pendingResult.success(hMap);
+                pendingResult.success(itemList);
             }
         });
     }
