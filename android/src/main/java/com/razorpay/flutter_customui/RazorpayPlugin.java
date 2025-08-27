@@ -41,13 +41,13 @@ public class RazorpayPlugin implements FlutterPlugin, MethodCallHandler, Activit
   }
 
   @Override
-  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "razorpay_flutter_customui");
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+    channel = new MethodChannel(binding.getBinaryMessenger(), "razorpay_flutter_customui");
     channel.setMethodCallHandler(this);
   }
 
   @Override
-  public void onMethodCall(@NonNull MethodCall call, @NonNull final Result result) {
+  public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
 
     switch (call.method) {
       case "initilizeSDK":
@@ -114,12 +114,6 @@ public class RazorpayPlugin implements FlutterPlugin, MethodCallHandler, Activit
   @Override
   public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
     channel.setMethodCallHandler(null);
-  }
-
-  @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-  public RazorpayPlugin(Registrar registrar) {
-    this.razorpayDelegate = new RazorpayDelegate(registrar.activity());
-    registrar.addActivityResultListener(razorpayDelegate);
   }
 
   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
